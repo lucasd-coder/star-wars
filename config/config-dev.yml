@@ -1,0 +1,18 @@
+app:
+  name: star-wars
+  version: 1.0.0
+
+http:
+  port: 8080
+
+logger:
+  log_level: info
+
+integration:
+  swapi-api:
+    url: https://swapi.dev/api
+    maxConn: 20
+    maxRoutes: 20
+    readTimeout: 10s
+    connTimeout: 10s
+
