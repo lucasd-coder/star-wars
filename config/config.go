@@ -8,6 +8,8 @@ type (
 		HTTP        `yaml:"http"`
 		Log         `yaml:"logger"`
 		Integration `yaml:"integration"`
+		MongoDb     `yaml:"mongodb"`
+		Cache       `yaml:"cache"`
 	}
 
 	App struct {
@@ -28,11 +30,24 @@ type (
 	}
 
 	SwapiApi struct {
-		SwapiUrl            string `yaml:"url"`
+		SwapiUrl            string `env-required:"true" yaml:"url"  env:"SWAPI_URL"`
 		SwapiApiMaxConn     int    `yaml:"maxConn"`
 		SwapiApiMaxRoutes   int    `yaml:"maxRoutes"`
 		SwapiApiReadTimeout string `yaml:"ReadTimeout"`
 		SwapiApiConnTimeout string `yaml:"connTimeout"`
+	}
+
+	MongoDb struct {
+		MongoDbDabase string `env-required:"true" yaml:"database" env:"DATABASE_MONGODB"`
+		MongoDbHost   string `env-required:"true" yaml:"host" env:"HOST_MONGODB"`
+		MongoDbPort   string `env-required:"true" yaml:"port" env:"PORT_MONGODB"`
+	}
+
+	Cache struct {
+		RedisUrl      string `yaml:"url" env:"REDIS_URL"`
+		RedisPort     int    `env:"REDIS_PORT"`
+		RedisDb       int    `env:"REDIS_DB"`
+		RedisPassword string `yaml:"password" env:"REDIS_PASSWORD"`
 	}
 )
 

@@ -3,16 +3,29 @@ app:
   version: 1.0.0
 
 http:
-  port: 8080
+  port: ${HTTP_PORT}
 
 logger:
-  log_level: info
+  log_level: ${LOG_LEVEL}
+
+cache:
+  url: ${REDIS_URL}
+  port: ${REDIS_PORT}
+  db: ${REDIS_DB}
+  password: ${REDIS_PASSWORD}
 
 integration:
   swapi-api:
-    url: https://swapi.dev/api
+    url: ${SWAPI_URL}
     maxConn: 20
     maxRoutes: 20
     readTimeout: 10s
     connTimeout: 10s
+
+mongodb:
+  database: ${DATABASE_MONGODB}
+  host: ${HOST_MONGODB}
+  port: ${PORT_MONGODB}
+
+
 
