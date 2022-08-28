@@ -71,8 +71,23 @@ func (mock *MockPlanetRepository) FindById(id string) (*models.Planet, error) {
 
 func (mock *MockPlanetRepository) FindAll() ([]models.Planet, error) {
 	args := mock.Called()
-	result := args.Get(0)
-	return result.([]models.Planet), args.Error(0)
+
+	var r0 []models.Planet
+	if rf, ok := args.Get(0).(func() []models.Planet); ok {
+		r0 = rf()
+	} else {
+		if args.Get(0) != nil {
+			r0 = args.Get(0).([]models.Planet)
+		}
+	}
+	var r1 error
+	if rf, ok := args.Get(1).(func() error); ok {
+		r1 = rf()
+	} else {
+		r1 = args.Error(1)
+	}
+
+	return r0, r1
 }
 
 func (mock *MockPlanetRepository) Delete(id string) (*mongo.DeleteResult, error) {

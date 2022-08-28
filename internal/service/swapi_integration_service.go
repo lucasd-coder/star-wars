@@ -15,7 +15,7 @@ import (
 )
 
 type SwapiIntegrationService struct {
-	Swapi        *api.SwapiAPI
+	Swapi        interfaces.SwapiAPI
 	CacheService interfaces.CacheService
 }
 

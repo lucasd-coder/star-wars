@@ -23,7 +23,7 @@ func TestFailIdInvalid(t *testing.T) {
 	assert.Equal(t, "id in not valid format", err.Error())
 }
 
-func TestFailPlanetNotFound(t *testing.T) {
+func TestFailPlanetByIdNotFound(t *testing.T) {
 	swapiIntegrationService := new(mock.MockSwapiIntegrationService)
 	mockPlanetRepository := new(mock.MockPlanetRepository)
 
@@ -39,7 +39,7 @@ func TestFailPlanetNotFound(t *testing.T) {
 	assert.Equal(t, "planet not found", err.Error())
 }
 
-func TestTestFindPlanetSuccessfully(t *testing.T) {
+func TestFindPlanetByIdSuccessfully(t *testing.T) {
 	swapiIntegrationService := new(mock.MockSwapiIntegrationService)
 	mockPlanetRepository := new(mock.MockPlanetRepository)
 

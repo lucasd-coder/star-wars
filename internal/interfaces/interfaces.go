@@ -47,4 +47,8 @@ type (
 	DeletePlanetByIdService interface {
 		Execute(id string) error
 	}
+
+	SwapiAPI interface {
+		FindAll() (*external.ResultsSwaApi, error)
+	}
 )

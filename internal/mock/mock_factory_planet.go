@@ -71,3 +71,30 @@ func FactorySwapiPlanet() []*external.SwapiPlanet {
 
 	return swapiPlanets
 }
+
+func FactoryPlanets() []models.Planet {
+	value_1, _ := primitive.ObjectIDFromHex("630b7bcb419f837457644cbc")
+	value_2, _ := primitive.ObjectIDFromHex("830b7bcb419f837457644cb5")
+	value_3, _ := primitive.ObjectIDFromHex("230b7bcb419f837457644cb7")
+
+	return []models.Planet{
+		{
+			ID:      value_1,
+			Name:    "Tatooine",
+			Climate: "arid",
+			Terrain: "desert",
+		},
+		{
+			ID:      value_2,
+			Name:    "Yavin IV",
+			Climate: "temperate, tropical",
+			Terrain: "jungle, rainforests",
+		},
+		{
+			ID:      value_3,
+			Name:    "Hoth",
+			Climate: "frozen",
+			Terrain: "tundra, ice caves, mountain ranges",
+		},
+	}
+}
