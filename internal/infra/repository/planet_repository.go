@@ -4,12 +4,12 @@ import (
 	"context"
 
 	"github.com/lucasd-coder/star-wars/config"
-	"github.com/lucasd-coder/star-wars/internal/errs"
 	"github.com/lucasd-coder/star-wars/internal/models"
 	"github.com/lucasd-coder/star-wars/pkg/logger"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type PlanetRepository struct {
@@ -26,6 +26,7 @@ func NewPlanetRepository(cfg *config.Config, connection *mongo.Client) *PlanetRe
 
 func (repo *PlanetRepository) Save(planet *models.Planet) error {
 	collection := repo.Connection.Database(repo.Config.MongoDbDabase).Collection("planets")
+	repo.createIndex("name", true)
 	_, err := collection.InsertOne(context.TODO(), planet)
 	if err != nil {
 		logger.Log.Error(err.Error())
@@ -41,13 +42,6 @@ func (repo *PlanetRepository) FindByName(name string) (*models.Planet, error) {
 
 	var planet *models.Planet
 	if err := collection.FindOne(context.TODO(), filter).Decode(&planet); err != nil {
-		if err == mongo.ErrNoDocuments {
-			return &models.Planet{}, &errs.AppError{
-				Code: 404,
-				Message: "planet not found",
-			}
-		}
-
 		return &models.Planet{}, err
 	}
 
@@ -65,21 +59,53 @@ func (repo *PlanetRepository) FindById(id string) (*models.Planet, error) {
 
 	var planet *models.Planet
 	if err := collection.FindOne(context.TODO(), filter).Decode(&planet); err != nil {
-		if err == mongo.ErrNoDocuments {
-			return &models.Planet{}, &errs.AppError{
-				Code: 404,
-				Message: "planet not found",
-			}
-		}
 		return &models.Planet{}, err
 	}
 	return planet, nil
 }
 
-func (repo *PlanetRepository) FindAll() ([]*models.Planet, error) {
-	return nil, nil
+func (repo *PlanetRepository) FindAll() ([]models.Planet, error) {
+	collection := repo.Connection.Database(repo.Config.MongoDbDabase).Collection("planets")
+	var planets []models.Planet
+	cursor, err := collection.Find(context.TODO(), bson.M{})
+	if err != nil {
+		return []models.Planet{}, err
+	}
+
+	if err := cursor.All(context.TODO(), &planets); err != nil {
+		return []models.Planet{}, err
+	}
+
+	return planets, nil
 }
 
-func (repo *PlanetRepository) Delete(id string) error {
-	return nil
+func (repo *PlanetRepository) Delete(id string) (*mongo.DeleteResult, error) {
+	collection := repo.Connection.Database(repo.Config.MongoDbDabase).Collection("planets")
+
+	objID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return &mongo.DeleteResult{}, err
+	}
+
+	filter := bson.M{"_id": bson.M{"$eq": objID}}
+	result, err := collection.DeleteOne(context.TODO(), filter)
+	if err != nil {
+		return &mongo.DeleteResult{}, err
+	}
+
+	return result, err
+}
+
+func (repo *PlanetRepository) createIndex(field string, unique bool) {
+	mod := mongo.IndexModel{
+		Keys:    bson.M{field: 1},
+		Options: options.Index().SetUnique(unique),
+	}
+
+	collection := repo.Connection.Database(repo.Config.MongoDbDabase).Collection("planets")
+
+	_, err := collection.Indexes().CreateOne(context.TODO(), mod)
+	if err != nil {
+		logger.Log.Error(err.Error())
+	}
 }

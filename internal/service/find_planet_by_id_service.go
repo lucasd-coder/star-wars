@@ -6,6 +6,7 @@ import (
 	"github.com/lucasd-coder/star-wars/internal/interfaces"
 	"github.com/lucasd-coder/star-wars/internal/models"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type FindPlanetByIdService struct {
@@ -25,13 +26,19 @@ func NewFindPlanetByIdService(swapi *SwapiIntegrationService,
 func (service *FindPlanetByIdService) Execute(id string) (*models.PlanetResponse, error) {
 	if !primitive.IsValidObjectID(id) {
 		return &models.PlanetResponse{}, &errs.AppError{
-			Code: 400,
+			Code:    400,
 			Message: "id in not valid format",
 		}
 	}
 
 	planet, err := service.PlanetRepository.FindById(id)
 	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return &models.PlanetResponse{}, &errs.AppError{
+				Code:    404,
+				Message: "planet not found",
+			}
+		}
 		return &models.PlanetResponse{}, err
 	}
 

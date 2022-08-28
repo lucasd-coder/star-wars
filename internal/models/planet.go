@@ -3,10 +3,10 @@ package models
 import "go.mongodb.org/mongo-driver/bson/primitive"
 
 type Planet struct {
-	ID      primitive.ObjectID `bson:"_id"`
-	Name    string             `bson:"name"`
-	Climate string             `bson:"climate"`
-	Terrain string             `bson:"terrain"`
+	ID      primitive.ObjectID `json:"id" bson:"_id"`
+	Name    string             `json:"name" bson:"name"`
+	Climate string             `json:"climate" bson:"climate"`
+	Terrain string             `json:"terrain" bson:"terrain"`
 }
 
 type PlanetDTO struct {
@@ -17,7 +17,7 @@ type PlanetDTO struct {
 
 type PlanetResponse struct {
 	Planet
-	MovieAppearances int
+	MovieAppearances int `json:"movie_appearances"`
 }
 
 func NewPlanet(dto PlanetDTO) *Planet {

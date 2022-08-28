@@ -5,6 +5,7 @@ import (
 	"github.com/lucasd-coder/star-wars/internal/infra/repository"
 	"github.com/lucasd-coder/star-wars/internal/interfaces"
 	"github.com/lucasd-coder/star-wars/internal/models"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type CreatePlanetService struct {
@@ -18,22 +19,22 @@ func NewCreatePlanetService(planetRepository *repository.PlanetRepository) *Crea
 }
 
 func (createPlanet *CreatePlanetService) Execute(dto *models.PlanetDTO) error {
-	existentPlan, err := createPlanet.PlanetRepository.FindByName(dto.Name)
+	existentPlanet, err := createPlanet.PlanetRepository.FindByName(dto.Name)
 	if err != nil {
-		return err
+		if err == mongo.ErrNoDocuments {
+			planet := models.NewPlanet(*dto)
+			err = createPlanet.PlanetRepository.Save(planet)
+			if err != nil {
+				return err
+			}
+		}
 	}
 
-	if existentPlan.Name != "" {
+	if existentPlanet.Name != "" {
 		return &errs.AppError{
 			Message: "Planet already exist!",
 			Code:    400,
 		}
-	}
-
-	planet := models.NewPlanet(*dto)
-	err = createPlanet.PlanetRepository.Save(planet)
-	if err != nil {
-		return err
 	}
 
 	return err

@@ -47,3 +47,13 @@ func InitializeFindPlanetByNameService() *service.FindPlanetByNameService {
 	wire.Build(InitializeSwapiIntegrationService, InitializePlanetRepository, service.NewFindPlanetByNameService)
 	return &service.FindPlanetByNameService{}
 }
+
+func InitializeFindAllPlanetService() *service.FindAllPlanetService {
+	wire.Build(InitializeSwapiIntegrationService, InitializePlanetRepository, service.NewFindAllPlanetService)
+	return &service.FindAllPlanetService{}
+}
+
+func InitializeDeletePlanetByIdService() *service.DeletePlanetByIdService {
+	wire.Build(InitializePlanetRepository, service.NewDeletePlanetByIdService)
+	return &service.DeletePlanetByIdService{}
+}

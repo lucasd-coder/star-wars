@@ -61,3 +61,16 @@ func InitializeFindPlanetByNameService() *service.FindPlanetByNameService {
 	findPlanetByNameService := service.NewFindPlanetByNameService(swapiIntegrationService, planetRepository)
 	return findPlanetByNameService
 }
+
+func InitializeFindAllPlanetService() *service.FindAllPlanetService {
+	swapiIntegrationService := InitializeSwapiIntegrationService()
+	planetRepository := InitializePlanetRepository()
+	findAllPlanetService := service.NewFindAllPlanetService(swapiIntegrationService, planetRepository)
+	return findAllPlanetService
+}
+
+func InitializeDeletePlanetByIdService() *service.DeletePlanetByIdService {
+	planetRepository := InitializePlanetRepository()
+	deletePlanetByIdService := service.NewDeletePlanetByIdService(planetRepository)
+	return deletePlanetByIdService
+}

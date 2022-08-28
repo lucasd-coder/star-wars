@@ -39,7 +39,11 @@ func Run(cfg *config.Config) {
 	createPlanetService := InitializeCreatePlanetService()
 	findPlanetByIdService := InitializeFindPlanetByIdService()
 	findPlanetByNameService := InitializeFindPlanetByNameService()
-	planetController := controller.NewPlanetController(createPlanetService, findPlanetByIdService, findPlanetByNameService)
+	findAllPlanetService := InitializeFindAllPlanetService()
+	deletePlanetByIdService := InitializeDeletePlanetByIdService()
+
+	planetController := controller.NewPlanetController(createPlanetService, findPlanetByIdService,
+		findPlanetByNameService, findAllPlanetService, deletePlanetByIdService)
 
 	planetController.InitRoutes(handler)
 

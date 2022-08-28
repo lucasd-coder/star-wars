@@ -1,9 +1,11 @@
 package service
 
 import (
+	"github.com/lucasd-coder/star-wars/internal/errs"
 	"github.com/lucasd-coder/star-wars/internal/infra/repository"
 	"github.com/lucasd-coder/star-wars/internal/interfaces"
 	"github.com/lucasd-coder/star-wars/internal/models"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type FindPlanetByNameService struct {
@@ -23,6 +25,12 @@ func NewFindPlanetByNameService(swapi *SwapiIntegrationService,
 func (service *FindPlanetByNameService) Execute(name string) (*models.PlanetResponse, error) {
 	planet, err := service.PlanetRepository.FindByName(name)
 	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return &models.PlanetResponse{}, &errs.AppError{
+				Code:    404,
+				Message: "planet not found",
+			}
+		}
 		return &models.PlanetResponse{}, err
 	}
 
