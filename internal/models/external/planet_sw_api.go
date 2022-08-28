@@ -1,10 +1,10 @@
 package external
 
-type swapiPlanet struct {
+type SwapiPlanet struct {
 	Name  string   `json:"name"`
 	Films []string `json:"films"`
 }
 
 type ResultsSwaApi struct {
-	Results []*swapiPlanet `json:"results"`
+	Results []*SwapiPlanet `json:"results"`
 }
