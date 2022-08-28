@@ -37,7 +37,9 @@ func Run(cfg *config.Config) {
 	})
 
 	createPlanetService := InitializeCreatePlanetService()
-	planetController := controller.NewPlanetController(createPlanetService)
+	findPlanetByIdService := InitializeFindPlanetByIdService()
+	findPlanetByNameService := InitializeFindPlanetByNameService()
+	planetController := controller.NewPlanetController(createPlanetService, findPlanetByIdService, findPlanetByNameService)
 
 	planetController.InitRoutes(handler)
 

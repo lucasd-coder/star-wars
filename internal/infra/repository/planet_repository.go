@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/lucasd-coder/star-wars/config"
+	"github.com/lucasd-coder/star-wars/internal/errs"
 	"github.com/lucasd-coder/star-wars/internal/models"
 	"github.com/lucasd-coder/star-wars/pkg/logger"
 	"go.mongodb.org/mongo-driver/bson"
@@ -40,6 +41,13 @@ func (repo *PlanetRepository) FindByName(name string) (*models.Planet, error) {
 
 	var planet *models.Planet
 	if err := collection.FindOne(context.TODO(), filter).Decode(&planet); err != nil {
+		if err == mongo.ErrNoDocuments {
+			return &models.Planet{}, &errs.AppError{
+				Code: 404,
+				Message: "planet not found",
+			}
+		}
+
 		return &models.Planet{}, err
 	}
 
@@ -57,6 +65,12 @@ func (repo *PlanetRepository) FindById(id string) (*models.Planet, error) {
 
 	var planet *models.Planet
 	if err := collection.FindOne(context.TODO(), filter).Decode(&planet); err != nil {
+		if err == mongo.ErrNoDocuments {
+			return &models.Planet{}, &errs.AppError{
+				Code: 404,
+				Message: "planet not found",
+			}
+		}
 		return &models.Planet{}, err
 	}
 	return planet, nil

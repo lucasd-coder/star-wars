@@ -25,7 +25,7 @@ func NewSwapiAPI() *SwapiAPI {
 	}
 }
 
-func (api *SwapiAPI) FindAll() (*[]external.ResultsSwaApi, error) {
+func (api *SwapiAPI) FindAll() (*external.ResultsSwaApi, error) {
 	cfg := config.GetConfig()
 
 	headers := map[string]string{}
@@ -40,7 +40,7 @@ func (api *SwapiAPI) FindAll() (*[]external.ResultsSwaApi, error) {
 		return nil, errors.New("unable to parse response from swapi")
 	}
 
-	var response []external.ResultsSwaApi
+	var response external.ResultsSwaApi
 	if err := http_client.ParseFromHttpResponse(resp, &response); err != nil {
 		return nil, err
 	}

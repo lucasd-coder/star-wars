@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-func ParseFromHttpResponse(resp *http.Response, model interface{}) error {	
+func ParseFromHttpResponse(resp *http.Response, model interface{}) error {
 	bodyBytes, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return err

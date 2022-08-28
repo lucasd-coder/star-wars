@@ -1,36 +1,27 @@
 package service
 
 import (
-	"github.com/lucasd-coder/star-wars/internal/errs"
 	"github.com/lucasd-coder/star-wars/internal/infra/repository"
 	"github.com/lucasd-coder/star-wars/internal/interfaces"
 	"github.com/lucasd-coder/star-wars/internal/models"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-type FindPlanetByIdService struct {
+type FindPlanetByNameService struct {
 	SwapiIntegrationService interfaces.SwapiIntegrationService
 	PlanetRepository        interfaces.PlanetRepository
 }
 
-func NewFindPlanetByIdService(swapi *SwapiIntegrationService,
+func NewFindPlanetByNameService(swapi *SwapiIntegrationService,
 	planetRepository *repository.PlanetRepository,
-) *FindPlanetByIdService {
-	return &FindPlanetByIdService{
+) *FindPlanetByNameService {
+	return &FindPlanetByNameService{
 		SwapiIntegrationService: swapi,
 		PlanetRepository:        planetRepository,
 	}
 }
 
-func (service *FindPlanetByIdService) Execute(id string) (*models.PlanetResponse, error) {
-	if !primitive.IsValidObjectID(id) {
-		return &models.PlanetResponse{}, &errs.AppError{
-			Code: 400,
-			Message: "id in not valid format",
-		}
-	}
-
-	planet, err := service.PlanetRepository.FindById(id)
+func (service *FindPlanetByNameService) Execute(name string) (*models.PlanetResponse, error) {
+	planet, err := service.PlanetRepository.FindByName(name)
 	if err != nil {
 		return &models.PlanetResponse{}, err
 	}

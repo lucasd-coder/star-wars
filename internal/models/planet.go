@@ -10,9 +10,14 @@ type Planet struct {
 }
 
 type PlanetDTO struct {
-	Name    string `json:"name" binding:"required"`
-	Climate string `json:"climate" binding:"required"`
-	Terrain string `json:"terrain" binding:"required"`
+	Name    string `binding:"required"`
+	Climate string `binding:"required"`
+	Terrain string `binding:"required"`
+}
+
+type PlanetResponse struct {
+	Planet
+	MovieAppearances int
 }
 
 func NewPlanet(dto PlanetDTO) *Planet {
@@ -21,5 +26,12 @@ func NewPlanet(dto PlanetDTO) *Planet {
 		Name:    dto.Name,
 		Climate: dto.Climate,
 		Terrain: dto.Terrain,
+	}
+}
+
+func NewPlanetResponse(planet Planet, movieAppearances int) *PlanetResponse {
+	return &PlanetResponse{
+		Planet:           planet,
+		MovieAppearances: movieAppearances,
 	}
 }

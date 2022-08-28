@@ -8,9 +8,11 @@ package app
 
 import (
 	"github.com/lucasd-coder/star-wars/config"
+	"github.com/lucasd-coder/star-wars/internal/infra/api"
 	"github.com/lucasd-coder/star-wars/internal/infra/repository"
 	"github.com/lucasd-coder/star-wars/internal/pkg/mongodb"
 	"github.com/lucasd-coder/star-wars/internal/service"
+	"github.com/lucasd-coder/star-wars/pkg/cache"
 )
 
 // Injectors from wire.go:
@@ -26,4 +28,36 @@ func InitializeCreatePlanetService() *service.CreatePlanetService {
 	planetRepository := InitializePlanetRepository()
 	createPlanetService := service.NewCreatePlanetService(planetRepository)
 	return createPlanetService
+}
+
+func InitializeSwapiAPI() *api.SwapiAPI {
+	swapiAPI := api.NewSwapiAPI()
+	return swapiAPI
+}
+
+func InitializeSwapiIntegrationService() *service.SwapiIntegrationService {
+	swapiAPI := InitializeSwapiAPI()
+	cacheService := InitializeCacheService()
+	swapiIntegrationService := service.NewSwapiIntegrationService(swapiAPI, cacheService)
+	return swapiIntegrationService
+}
+
+func InitializeFindPlanetByIdService() *service.FindPlanetByIdService {
+	swapiIntegrationService := InitializeSwapiIntegrationService()
+	planetRepository := InitializePlanetRepository()
+	findPlanetByIdService := service.NewFindPlanetByIdService(swapiIntegrationService, planetRepository)
+	return findPlanetByIdService
+}
+
+func InitializeCacheService() *service.CacheService {
+	client := cache.GetClient()
+	cacheService := service.NewCacheService(client)
+	return cacheService
+}
+
+func InitializeFindPlanetByNameService() *service.FindPlanetByNameService {
+	swapiIntegrationService := InitializeSwapiIntegrationService()
+	planetRepository := InitializePlanetRepository()
+	findPlanetByNameService := service.NewFindPlanetByNameService(swapiIntegrationService, planetRepository)
+	return findPlanetByNameService
 }

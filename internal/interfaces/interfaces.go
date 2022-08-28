@@ -1,7 +1,11 @@
 package interfaces
 
 import (
+	"context"
+	"time"
+
 	"github.com/lucasd-coder/star-wars/internal/models"
+	"github.com/lucasd-coder/star-wars/internal/models/external"
 )
 
 type (
@@ -18,6 +22,20 @@ type (
 	}
 
 	FindPlanetByIdService interface {
-		Execute(id string) (*models.Planet, error)
+		Execute(id string) (*models.PlanetResponse, error)
+	}
+
+	FindPlanetByNameService interface {
+		Execute(name string) (*models.PlanetResponse, error)
+	}
+
+	SwapiIntegrationService interface {
+		FindAll() *external.ResultsSwaApi
+		SearchMovieAppearances(result *external.ResultsSwaApi, planet *models.Planet) int
+	}
+
+	CacheService interface {
+		Save(ctx context.Context, key string, value interface{}, ttl time.Duration) error
+		Get(ctx context.Context, key string) (string, error)
 	}
 )
