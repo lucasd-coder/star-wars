@@ -15,9 +15,9 @@ func TestFailPlanetByNomeNotFound(t *testing.T) {
 	mockPlanetRepository := new(mock.MockPlanetRepository)
 
 	var name string = "name not found"
-	plant := models.Planet{}
+	planet := models.Planet{}
 
-	mockPlanetRepository.On("FindByName", name).Return(&plant, mongo.ErrNoDocuments)
+	mockPlanetRepository.On("FindByName", name).Return(&planet, mongo.ErrNoDocuments)
 
 	testService := service.FindPlanetByNameService{swapiIntegrationService, mockPlanetRepository}
 

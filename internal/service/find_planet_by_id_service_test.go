@@ -28,9 +28,9 @@ func TestFailPlanetByIdNotFound(t *testing.T) {
 	mockPlanetRepository := new(mock.MockPlanetRepository)
 
 	var id string = "630b7bcb419f837457644cbc"
-	plant := models.Planet{}
+	planet := models.Planet{}
 
-	mockPlanetRepository.On("FindById", id).Return(&plant, mongo.ErrNoDocuments)
+	mockPlanetRepository.On("FindById", id).Return(&planet, mongo.ErrNoDocuments)
 
 	testService := service.FindPlanetByIdService{swapiIntegrationService, mockPlanetRepository}
 

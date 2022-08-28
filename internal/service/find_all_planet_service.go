@@ -21,20 +21,20 @@ func NewFindAllPlanetService(swapi *SwapiIntegrationService,
 }
 
 func (service *FindAllPlanetService) Execute() (*[]models.PlanetResponse, error) {
-	plantes, err := service.PlanetRepository.FindAll()
+	planets, err := service.PlanetRepository.FindAll()
 	if err != nil {
 		return &[]models.PlanetResponse{}, err
 	}
 
 	resultSwapi := service.SwapiIntegrationService.FindAll()
 
-	plantesResponse := make([]models.PlanetResponse, 0, len(plantes))
+	planetesResponse := make([]models.PlanetResponse, 0, len(planets))
 
-	for _, plante := range plantes {
-		movieAppearances := service.SwapiIntegrationService.SearchMovieAppearances(resultSwapi, &plante)
+	for _, planete := range planets {
+		movieAppearances := service.SwapiIntegrationService.SearchMovieAppearances(resultSwapi, &planete)
 
-		plantesResponse = append(plantesResponse, *models.NewPlanetResponse(plante, movieAppearances))
+		planetesResponse = append(planetesResponse, *models.NewPlanetResponse(planete, movieAppearances))
 	}
 
-	return &plantesResponse, nil
+	return &planetesResponse, nil
 }

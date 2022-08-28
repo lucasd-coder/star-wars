@@ -33,9 +33,9 @@ func TestCreatePlanetSuccessfully(t *testing.T) {
 
 	dto := mock.FactoryPlanetDTO()
 
-	plant := models.Planet{}
+	planet := models.Planet{}
 
-	mockPlanetRepository.On("FindByName", dto.Name).Return(&plant, mongo.ErrNoDocuments)
+	mockPlanetRepository.On("FindByName", dto.Name).Return(&planet, mongo.ErrNoDocuments)
 	mockPlanetRepository.On("Save", mockTestify.Anything).Return(nil)
 
 	testService := service.CreatePlanetService{mockPlanetRepository}
