@@ -9,6 +9,10 @@ type MockCreatePlanetService struct {
 	mock.Mock
 }
 
+func NewMockCreatePlanetService() *MockCreatePlanetService {
+	return &MockCreatePlanetService{}
+}
+
 func (mock *MockCreatePlanetService) Execute(planet *models.PlanetDTO) error {
 	args := mock.Called(planet)
 

@@ -31,6 +31,15 @@ func FactoryPlanetResponse() *models.PlanetResponse {
 	}
 }
 
+func FactoryPlanetsResponse() *[]models.PlanetResponse {
+	return &[]models.PlanetResponse{
+		{
+			Planet:           *FactoryPlanet(),
+			MovieAppearances: 5,
+		},
+	}
+}
+
 func FactoryResultsSwaApi() *external.ResultsSwaApi {
 	return &external.ResultsSwaApi{
 		Results: FactorySwapiPlanet(),
