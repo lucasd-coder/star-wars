@@ -39,7 +39,7 @@ func TestFailDeleteByIdNotFound(t *testing.T) {
 	assert.Equal(t, "planet not found", err.Error())
 }
 
-func TestFailDeleteSuccessfully(t *testing.T) {
+func TestDeleteSuccessfully(t *testing.T) {
 	mockPlanetRepository := new(mock.MockPlanetRepository)
 
 	var id string = "630b7bcb419f837457644cbc"
