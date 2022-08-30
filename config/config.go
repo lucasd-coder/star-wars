@@ -44,10 +44,9 @@ type (
 	}
 
 	Cache struct {
-		RedisUrl      string `yaml:"url" env:"REDIS_URL"`
-		RedisPort     int    `env:"REDIS_PORT"`
-		RedisDb       int    `env:"REDIS_DB"`
-		RedisPassword string `yaml:"password" env:"REDIS_PASSWORD"`
+		RedisUrl  string `yaml:"url" env:"REDIS_URL"`
+		RedisPort int    `env:"REDIS_PORT"`
+		RedisDb   int    `env:"REDIS_DB"`
 	}
 )
 

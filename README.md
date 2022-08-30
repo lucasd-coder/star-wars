@@ -19,7 +19,6 @@ Definir uma arquivo ```.env``` na raiz do projeto com algumas variáveis ambient
 
 | NAME                 | VALUE                 |
 |----------------------|-----------------------|
-| REDIS_PASSWORD       | redis                 |
 | REDIS_URL            | host.docker.internal  |
 | REDIS_PORT           | 6379                  |
 | REDIS_DB             | 4                     |

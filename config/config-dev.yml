@@ -12,7 +12,6 @@ cache:
   url: ${REDIS_URL}
   port: ${REDIS_PORT}
   db: ${REDIS_DB}
-  password: ${REDIS_PASSWORD}
 
 integration:
   swapi-api:

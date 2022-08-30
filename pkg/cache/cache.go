@@ -13,9 +13,8 @@ func SetUpRedis(cfg *config.Config) {
 	url := fmt.Sprintf("%s:%d", cfg.RedisUrl, cfg.RedisPort)
 
 	redisClient := redis.NewClient(&redis.Options{
-		Addr:     url,
-		DB:       cfg.RedisDb,
-		Password: cfg.RedisPassword,
+		Addr: url,
+		DB:   cfg.RedisDb,
 	})
 
 	client = redisClient
