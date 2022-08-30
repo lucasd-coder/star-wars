@@ -29,7 +29,7 @@ Definir uma arquivo ```.env``` na raiz do projeto com algumas variáveis ambient
 | PORT_MONGODB         | 27017                 |
 | LOG_LEVEL            | info                  |
 | HTTP_PORT            | 8080                  |
-| SWAPI_URL            | https://swapi.dev/api |
+| SWAPI_URL            | https://swapi.dev     |
 
 ### CMD docker-compose gerar a imagem
 ```
