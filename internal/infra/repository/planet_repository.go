@@ -12,6 +12,10 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+const (
+	collection = "planets"
+)
+
 type PlanetRepository struct {
 	Config     *config.Config
 	Connection *mongo.Client
@@ -25,7 +29,7 @@ func NewPlanetRepository(cfg *config.Config, connection *mongo.Client) *PlanetRe
 }
 
 func (repo *PlanetRepository) Save(planet *models.Planet) error {
-	collection := repo.Connection.Database(repo.Config.MongoDbDabase).Collection("planets")
+	collection := repo.Connection.Database(repo.Config.MongoDbDabase).Collection(collection)
 	repo.createIndex("name", true)
 	_, err := collection.InsertOne(context.TODO(), planet)
 	if err != nil {
@@ -37,7 +41,7 @@ func (repo *PlanetRepository) Save(planet *models.Planet) error {
 }
 
 func (repo *PlanetRepository) FindByName(name string) (*models.Planet, error) {
-	collection := repo.Connection.Database(repo.Config.MongoDbDabase).Collection("planets")
+	collection := repo.Connection.Database(repo.Config.MongoDbDabase).Collection(collection)
 	filter := bson.M{"name": bson.M{"$eq": name}}
 
 	var planet *models.Planet
@@ -49,7 +53,7 @@ func (repo *PlanetRepository) FindByName(name string) (*models.Planet, error) {
 }
 
 func (repo *PlanetRepository) FindById(id string) (*models.Planet, error) {
-	collection := repo.Connection.Database(repo.Config.MongoDbDabase).Collection("planets")
+	collection := repo.Connection.Database(repo.Config.MongoDbDabase).Collection(collection)
 	objID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
 		return &models.Planet{}, err
@@ -65,7 +69,7 @@ func (repo *PlanetRepository) FindById(id string) (*models.Planet, error) {
 }
 
 func (repo *PlanetRepository) FindAll() ([]models.Planet, error) {
-	collection := repo.Connection.Database(repo.Config.MongoDbDabase).Collection("planets")
+	collection := repo.Connection.Database(repo.Config.MongoDbDabase).Collection(collection)
 	var planets []models.Planet
 	cursor, err := collection.Find(context.TODO(), bson.M{})
 	if err != nil {
@@ -80,7 +84,7 @@ func (repo *PlanetRepository) FindAll() ([]models.Planet, error) {
 }
 
 func (repo *PlanetRepository) Delete(id string) (*mongo.DeleteResult, error) {
-	collection := repo.Connection.Database(repo.Config.MongoDbDabase).Collection("planets")
+	collection := repo.Connection.Database(repo.Config.MongoDbDabase).Collection(collection)
 
 	objID, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
@@ -102,7 +106,7 @@ func (repo *PlanetRepository) createIndex(field string, unique bool) {
 		Options: options.Index().SetUnique(unique),
 	}
 
-	collection := repo.Connection.Database(repo.Config.MongoDbDabase).Collection("planets")
+	collection := repo.Connection.Database(repo.Config.MongoDbDabase).Collection(collection)
 
 	_, err := collection.Indexes().CreateOne(context.TODO(), mod)
 	if err != nil {

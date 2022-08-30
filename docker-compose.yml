@@ -5,7 +5,7 @@ services:
     container_name: starwars
     build: .
     ports:
-      - 8081:${HTTP_PORT}
+      - ${HTTP_PORT}:${HTTP_PORT}
     volumes:
       - .:/src
     depends_on:
